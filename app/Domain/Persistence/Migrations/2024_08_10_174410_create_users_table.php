@@ -1,5 +1,5 @@
 <?php
-namespace App\Infrastructure\Persistence\Migrations;
+namespace App\Domain\Persistence\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
