@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Domain\Persistence\Models;
 
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -11,15 +13,15 @@ class UserModel extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+    protected $guarded = [
+        'id',
     ];
 
     /**
@@ -43,5 +45,10 @@ class UserModel extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function token(): HasOne
+    {
+        return $this->hasOne(TokenModel::class);
     }
 }
