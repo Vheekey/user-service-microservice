@@ -2,10 +2,10 @@
 
 namespace App\Application\UseCases;
 
-use App\Domain\Notifications\SendToken;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Interfaces\TokenRepositoryInterface;
-use Illuminate\Support\Facades\Notification;
+use App\Infrastructure\Kafka\KafkaProducer;
+use Illuminate\Support\Facades\Log;
 
 class SendUserToken
 {
@@ -19,9 +19,11 @@ class SendUserToken
     public function execute(User $user): void
     {
         $token = $this->tokenRepository->createToken($user);
+        $user->setToken($token);
 
-        Notification::route('mail', [
-            $user->getEmail() => $user->getName()
-        ])->notify(new SendToken($user, $token));
+        Log::info('Emitting token notification to Kafka');
+
+        KafkaProducer::setTopic(config('kafka.topics.notifications'))
+            ->send([$user]);
     }
 }

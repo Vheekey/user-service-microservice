@@ -12,6 +12,12 @@ class User
     private string $password;
     private int $roleId;
     private bool $is_active;
+    private string $token;
+
+    public function getToken(): string
+    {
+        return $this->token;
+    }
 
     public function __construct(
         string $email,
@@ -123,5 +129,10 @@ class User
             'role' => $this->getRole(),
             'is_active' => $this->getActive()
         ];
+    }
+
+    public function setToken(string $token): void
+    {
+        $this->token = $token;
     }
 }
