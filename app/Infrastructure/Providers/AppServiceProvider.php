@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Providers;
 
-use App\Domain\Listeners\TokenNotificationSubscriber;
+use App\Application\Listeners\TokenNotificationSubscriber;
 use App\Domain\User\Interfaces\AuthenticationServiceInterface;
 use App\Domain\User\Interfaces\TokenRepositoryInterface;
 use App\Domain\User\Interfaces\UserRepositoryInterface;

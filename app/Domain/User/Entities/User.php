@@ -13,6 +13,7 @@ class User
     private int $roleId;
     private bool $is_active;
     private string $token;
+    private bool $isNotified;
 
     public function getToken(): string
     {
@@ -134,5 +135,15 @@ class User
     public function setToken(string $token): void
     {
         $this->token = $token;
+    }
+
+    public function hasBeenNotified(): bool
+    {
+        return $this->isNotified === true;
+    }
+
+    public function markAsNotified(): void
+    {
+        $this->isNotified = true;
     }
 }
