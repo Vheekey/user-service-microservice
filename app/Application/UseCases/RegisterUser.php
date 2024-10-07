@@ -3,6 +3,7 @@
 namespace App\Application\UseCases;
 
 use AllowDynamicProperties;
+use App\Domain\Events\NewUserRegistered;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Interfaces\AuthenticationServiceInterface;
 use App\Domain\User\Interfaces\UserRepositoryInterface;
@@ -23,9 +24,15 @@ use App\Domain\User\Interfaces\UserRepositoryInterface;
 
     public function execute(string $email, string $name, string $password): array
     {
-        $user = new User($email, $name, $this->authenticationService->hashPassword($password));
-        $user = $this->userRepository->save($user);
+        $userEntity = new User(
+            $email,
+            $name,
+            $this->authenticationService->hashPassword($password)
+        );
+        $userEntity = $this->userRepository->save($userEntity);
 
-        return $user->getUserArray();
+        NewUserRegistered::dispatch($userEntity);
+
+        return $userEntity->getUserArray();
     }
 }
