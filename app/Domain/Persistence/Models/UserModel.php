@@ -46,9 +46,4 @@ class UserModel extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function token(): HasOne
-    {
-        return $this->hasOne(TokenModel::class);
-    }
 }
