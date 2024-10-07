@@ -24,10 +24,9 @@ class CacheTokenRepository implements TokenRepositoryInterface
         return $token;
     }
 
-    public function get(string $token): string
+    public function getTokenDetails(string $token): array
     {
-        // TODO: Implement getToken() method.
-        return '';
+        return Cache::get($this->makeRedisKey($token));
     }
 
     /**
@@ -45,7 +44,6 @@ class CacheTokenRepository implements TokenRepositoryInterface
 
     public function verifyToken(string $token): bool
     {
-        // TODO: Implement verifyToken() method.
-        return false;
+        return Cache::has($this->makeRedisKey($token));
     }
 }

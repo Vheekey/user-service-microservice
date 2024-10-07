@@ -2,7 +2,6 @@
 
 namespace App\Domain\Listeners;
 
-use App\Application\UseCases\RegisterUser;
 use App\Application\UseCases\SendUserToken;
 use App\Domain\Events\NewUserRegistered;
 use Illuminate\Events\Dispatcher;
