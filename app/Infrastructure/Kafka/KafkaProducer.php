@@ -14,8 +14,9 @@ class KafkaProducer
     private static string $key = '';
     private static array $headers = [];
 
-    public static function send(array $message): void
+    public static function send(array $message): bool
     {
+        $sent = false;
         try {
             $sent = Kafka::asyncPublish(config('kafka.brokers'))
                 ->onTopic(self::getTopic())
@@ -26,6 +27,8 @@ class KafkaProducer
         } catch (Throwable $e) {
             Log::error('Error publishing message on Kafka', ['error' => $e->getMessage()]);
         }
+
+        return $sent;
     }
 
     public static function setKafkaKey(string $key): self

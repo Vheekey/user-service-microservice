@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Domain\Notifications;
+namespace App\Infrastructure\Notifications;
 
 use App\Domain\User\Entities\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -18,10 +17,10 @@ class SendToken extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(User $user, string $token)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->token = $token;
+        $this->token = $user->getToken();
     }
 
     /**

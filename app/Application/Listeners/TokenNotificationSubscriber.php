@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Listeners;
+namespace App\Application\Listeners;
 
 use App\Application\UseCases\SendUserToken;
 use App\Domain\Events\NewUserRegistered;
