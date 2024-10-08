@@ -32,7 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            Log::error('Validation Exception caught: ' . $e->getMessage());
+            Log::error('Not found Exception caught: ' . $e->getMessage());
             return Response::render($e->getStatusCode(), $e->getMessage(), $request->all(), $request->isJson());
         });
     })->withCommands([
