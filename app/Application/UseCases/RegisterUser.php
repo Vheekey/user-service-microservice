@@ -2,13 +2,12 @@
 
 namespace App\Application\UseCases;
 
-use AllowDynamicProperties;
 use App\Domain\Events\NewUserRegistered;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Interfaces\AuthenticationServiceInterface;
 use App\Domain\User\Interfaces\UserRepositoryInterface;
 
-#[AllowDynamicProperties] class RegisterUser
+class RegisterUser
 {
     private UserRepositoryInterface $userRepository;
     private AuthenticationServiceInterface $authenticationService;
@@ -22,7 +21,7 @@ use App\Domain\User\Interfaces\UserRepositoryInterface;
         $this->authenticationService = $authenticationService;
     }
 
-    public function execute(string $email, string $name, string $password): array
+    public function execute(string $email, string $name, string $password): User
     {
         $userEntity = new User(
             $email,
@@ -33,6 +32,6 @@ use App\Domain\User\Interfaces\UserRepositoryInterface;
 
         NewUserRegistered::dispatch($userEntity);
 
-        return $userEntity->getUserArray();
+        return $userEntity;
     }
 }
