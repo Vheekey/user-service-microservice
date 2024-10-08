@@ -2,6 +2,7 @@
 
 namespace App\Domain\User\Entities;
 
+use App\Domain\Persistence\Models\UserModel;
 use App\Shared\Enums\RoleEnum;
 
 class User
@@ -15,11 +16,6 @@ class User
     private string $token;
     private bool $isNotified;
 
-    public function getToken(): string
-    {
-        return $this->token;
-    }
-
     public function __construct(
         string $email,
         string $name,
@@ -32,6 +28,11 @@ class User
         $this->password = $password;
         $this->roleId = $roleId;
         $this->is_active = true;
+    }
+
+    public function getToken(): string
+    {
+        return $this->token;
     }
 
     public function getName(): string
@@ -145,5 +146,10 @@ class User
     public function markAsNotified(): void
     {
         $this->isNotified = true;
+    }
+
+    public function getUserModel(): UserModel
+    {
+        return UserModel::where('email', $this->email)->first();
     }
 }
