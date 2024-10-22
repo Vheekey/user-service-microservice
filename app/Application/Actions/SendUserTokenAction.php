@@ -6,6 +6,7 @@ use App\Domain\User\Entities\User;
 use App\Infrastructure\Kafka\KafkaProducer;
 use App\Infrastructure\Notifications\SendToken;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
@@ -42,8 +43,9 @@ class SendUserTokenAction
     private function sendViaKafka(User $user): bool
     {
         Log::info('Sending token notification via Kafka.');
+        $excludedFields = ['password', 'token'];
         return KafkaProducer::setTopic(config('kafka.topics.notifications'))
-            ->send([$user]);
+            ->send(Arr::except($user->getUserArray(), $excludedFields));
     }
 
     private function sendViaNotificationFacade(User $user): void

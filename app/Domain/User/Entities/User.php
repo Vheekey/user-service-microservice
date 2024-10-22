@@ -129,7 +129,8 @@ class User
             'password' => $this->password,
             'role_id' => $this->getRoleId(),
             'role' => $this->getRole(),
-            'is_active' => $this->getActive()
+            'is_active' => $this->getActive(),
+            'code' => $this->token ?? null,
         ];
     }
 
