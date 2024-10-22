@@ -17,13 +17,18 @@ class KafkaProducer
     public static function send(array $message): bool
     {
         $sent = false;
+        $sentMessage = self::createMessage($message);
         try {
-            $sent = Kafka::asyncPublish(config('kafka.brokers'))
+            $sent = Kafka::publish(config('kafka.brokers'))
                 ->onTopic(self::getTopic())
-                ->withMessage(self::createMessage($message))
+                ->withMessage($sentMessage)
                 ->send();
 
-            Log::info('Message sent to Kafka.', ['sent' => $sent]);
+            Log::info('Message sent to Kafka.', [
+                'sent' => $sent,
+                'message' => $sentMessage,
+                'topic' => self::getTopic()
+            ]);
         } catch (Throwable $e) {
             Log::error('Error publishing message on Kafka', ['error' => $e->getMessage()]);
         }
@@ -62,11 +67,14 @@ class KafkaProducer
         return self::$key ?? config('kafka.message_id_key');
     }
 
+    /**
+     * @throws \JsonException
+     */
     private static function createMessage(array $message): ProducerMessage
     {
         return new Message(
             headers: self::$headers,
-            body: $message,
+            body: json_encode($message, JSON_THROW_ON_ERROR),
             key: self::getKey()
         );
     }
