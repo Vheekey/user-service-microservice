@@ -15,8 +15,14 @@ class AuthenticationService implements AuthenticationServiceInterface
 
     public function generateToken(User $user, ?array $abilities): string
     {
-        return $user->getUserModel()
+        return $user->getUserModel($user->getEmail())
             ->createToken($user->getEmail(), $abilities)
             ->plainTextToken;
+    }
+
+    public function verifyToken(User $user, ?array $abilities): bool
+    {
+        // TODO: Implement verifyToken() method.
+        return false;
     }
 }

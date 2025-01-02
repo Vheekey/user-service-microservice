@@ -8,5 +8,7 @@ interface AuthenticationServiceInterface
 {
     public function hashPassword(string $password): string;
 
-    public function generateToken(User $user, ?array $abilities) : string;
+    public function generateToken(User $user, ?array $abilities): string;
+
+    public function verifyToken(User $user, ?array $abilities): bool;
 }

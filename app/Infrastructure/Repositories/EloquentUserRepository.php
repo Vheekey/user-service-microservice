@@ -25,4 +25,25 @@ use App\Domain\User\Interfaces\UserRepositoryInterface;
 
         return $user;
     }
+
+
+    public function getUserByEmail(string $email): ?User
+    {
+        $eloquentUser = $this->eloquentUser->where('email', $email)->first();
+
+        if (!$eloquentUser) {
+            return null;
+        }
+
+        $user = new User(
+            $eloquentUser->email,
+            $eloquentUser->name,
+            $eloquentUser->password,
+            $eloquentUser->role_id,
+        );
+
+        $user->setId($eloquentUser->id);
+
+        return $user;
+    }
 }
