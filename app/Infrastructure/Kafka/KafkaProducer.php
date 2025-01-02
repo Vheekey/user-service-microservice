@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Kafka;
 
 use Illuminate\Support\Facades\Log;
+use JsonException;
 use Junges\Kafka\Contracts\ProducerMessage;
 use Junges\Kafka\Facades\Kafka;
 use Junges\Kafka\Message\Message;
@@ -14,6 +15,9 @@ class KafkaProducer
     private static string $key = '';
     private static array $headers = [];
 
+    /**
+     * @throws JsonException
+     */
     public static function send(array $message): bool
     {
         $sent = false;
@@ -68,7 +72,7 @@ class KafkaProducer
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     private static function createMessage(array $message): ProducerMessage
     {
