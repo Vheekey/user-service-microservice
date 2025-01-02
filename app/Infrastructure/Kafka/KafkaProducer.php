@@ -26,7 +26,7 @@ class KafkaProducer
 
             Log::info('Message sent to Kafka.', [
                 'sent' => $sent,
-                'message' => $message,
+                'message' => $sentMessage,
                 'topic' => self::getTopic()
             ]);
         } catch (Throwable $e) {
