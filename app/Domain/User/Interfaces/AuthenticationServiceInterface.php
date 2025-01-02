@@ -10,5 +10,7 @@ interface AuthenticationServiceInterface
 
     public function generateToken(User $user, ?array $abilities): string;
 
-    public function verifyToken(User $user, ?array $abilities): bool;
+    public function decodeJwtToken(string $token): ?object;
+
+    public function isValidJwtToken(string $token): bool;
 }

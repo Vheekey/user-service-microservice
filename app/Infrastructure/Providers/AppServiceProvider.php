@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Providers;
 
 use App\Application\Listeners\TokenNotificationSubscriber;
+use App\Domain\Persistence\Models\PersonalAccessToken;
 use App\Domain\User\Interfaces\AuthenticationServiceInterface;
 use App\Domain\User\Interfaces\TokenRepositoryInterface;
 use App\Domain\User\Interfaces\UserRepositoryInterface;
@@ -11,6 +12,7 @@ use App\Infrastructure\Repositories\EloquentUserRepository;
 use App\Infrastructure\Services\AuthenticationService;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Event::subscribe(TokenNotificationSubscriber::class);
     }
 }
