@@ -4,6 +4,11 @@ namespace App\Domain\User\Entities;
 
 use App\Domain\Persistence\Models\UserModel;
 use App\Shared\Enums\RoleEnum;
+use Exception;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Illuminate\Support\Facades\Log;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class User
 {
@@ -149,8 +154,34 @@ class User
         $this->isNotified = true;
     }
 
-    public function getUserModel(): UserModel
+    public function getUserModel(?string $email = null): UserModel
     {
-        return UserModel::where('email', $this->email)->first();
+        return UserModel::where('email', $email ?? $this->email)->first();
+    }
+
+    public function getUserAbilities(string $email): array
+    {
+        $user = $this->getUserModel($email);
+
+        // Get the latest token
+        $token = PersonalAccessToken::where('tokenable_id', $user->id)
+            ->where('tokenable_type', UserModel::class)
+            ->latest()
+            ->first();
+
+        return $token ? $token->abilities : [];
+    }
+
+    public function getUserAbilitiesViaToken(string $token): array
+    {
+        try {
+            $decoded = JWT::decode($token, new Key(env('JWT_SECRET'), 'HS256'));
+
+            return $decoded->abilities ?? [];
+        } catch (Exception $e) {
+            Log::error("Error fetching token abilities: {$e->getMessage()} ");
+
+            return [];
+        }
     }
 }

@@ -9,5 +9,8 @@ Route::prefix('v1')->group(function () {
         return Response::render(200, 'Welcome to PLMS v1', []);
     });
 
-    Route::post('users', AuthController::class . '@register');
+    Route::prefix('users')->group(function () {
+        Route::post('/', AuthController::class . '@register');
+        Route::post('login', AuthController::class . '@login');
+    });
 });
