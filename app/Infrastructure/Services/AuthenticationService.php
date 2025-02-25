@@ -39,7 +39,8 @@ class AuthenticationService implements AuthenticationServiceInterface
             'email' => $user->getEmail(),
             'abilities' => $abilities,
             'iat' => time(),          // Issued at
-            'exp' => $expiry
+            'exp' => $expiry,
+            'scope' => 'read write',
         ];
 
         return JWT::encode($payload, env('JWT_SECRET'), 'HS256');
@@ -48,7 +49,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     public function decodeJwtToken(string $token): ?object
     {
         try {
-            return JWT::decode($token, new Key(env('JWT_SECRET'), 'HS256'));
+            return JWT::decode($token, new Key(env('JWT_SECRET'), 'HmacSHA256'));
         } catch (NotFoundHttpException $e) {
             return null;
         }

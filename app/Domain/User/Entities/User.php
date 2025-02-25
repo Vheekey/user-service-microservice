@@ -19,7 +19,7 @@ class User
     private int $roleId;
     private bool $is_active;
     private string $token;
-    private bool $isNotified;
+    private bool $isNotified = false;
 
     public function __construct(
         string $email,
