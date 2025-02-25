@@ -42,6 +42,7 @@ class UserSeeder extends Seeder
 
             if ($inserted) {
                 $userEntity = $this->createUserEntity($email, $name, $password, $role);
+                $userEntity->setId(1);
 
                 $this->generateAuthTokenForUser($userEntity);
             }

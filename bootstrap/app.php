@@ -1,6 +1,7 @@
 <?php
 
 use App\Console\Commands\InitialiseDB;
+use App\Infrastructure\Middleware\ValidateApiKey;
 use App\Shared\Response;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,7 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->append([
+            ValidateApiKey::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (ValidationException $e, Request $request) {
