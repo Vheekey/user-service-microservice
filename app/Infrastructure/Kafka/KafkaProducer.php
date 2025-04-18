@@ -78,7 +78,7 @@ class KafkaProducer
     {
         return new Message(
             headers: self::$headers,
-            body: json_encode($message, JSON_THROW_ON_ERROR),
+            body: $message,
             key: self::getKey()
         );
     }

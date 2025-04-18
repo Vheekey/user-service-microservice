@@ -130,12 +130,14 @@ class User
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
             'role_id' => $this->getRoleId(),
             'role' => $this->getRole(),
             'is_active' => $this->getActive(),
             'code' => $this->token ?? null,
+            'created_at' => now(),
         ];
     }
 
